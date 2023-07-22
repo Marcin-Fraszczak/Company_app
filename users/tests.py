@@ -49,6 +49,12 @@ class TestUserRegistration:
 		"first_name": 3,
 		"last_name": 3,
 	}
+	emails = {
+		'normalized': 'test@gmail.com',
+		'capital letters': 'test@GmAil.com',
+		'white spaces': '  test@gmail.com     ',
+		'dots at the end': 'test@gmail.com....',
+	}
 	User = get_user_model()
 
 	def test_url_exists_at_correct_location(self, options_response):
@@ -127,3 +133,32 @@ class TestUserRegistration:
 			assert field in response.json()
 			users_after = self.User.objects.all().count()
 			assert users_after - users_before == 0
+
+	@pytest.mark.django_db
+	def test_user_can_register(self, client):
+		users_before = self.User.objects.all().count()
+		response = client.post(self.register_url, self.user_data)
+		assert response.status_code == 201
+		users_after = self.User.objects.all().count()
+		assert users_after - users_before == 1
+
+	@pytest.mark.django_db
+	def test_user_can_register(self, client):
+		"""
+		Different emails should be considered as the same one.
+		"""
+		normalized = self.emails['normalized']
+		for (info, email) in self.emails.items():
+			users_before = self.User.objects.all().count()
+			data = self.user_data.copy()
+			data.update({'username': info.replace(" ", ""), 'email': email})
+			print(data)
+			response = client.post(self.register_url, data)
+			print(response.json())
+			assert response.status_code == 201
+			users_after = self.User.objects.all().count()
+			assert users_after - users_before == 1
+			assert response.json().get("email") == normalized
+
+
+

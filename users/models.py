@@ -4,7 +4,6 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import MinLengthValidator
 from django.db import models
 from users import exceptions
-from re import sub as re_sub
 
 
 class CustomUserManager(BaseUserManager):
@@ -23,9 +22,9 @@ class CustomUserManager(BaseUserManager):
 			"""not implemented"""
 			# 8.  Remove repetitions of '.com'.
 			# 9.  Remove any characters after '.com'.
-			re_sub('\.com[a-z0-9]+', '.com', domain_part)
+			# re_sub('\.com[a-z0-9]+', '.com', domain_part)
 			# 10. Remove leading digits in 'gmail.com'.
-			re_sub('[0-9]+gmail.com', 'gmail.com', domain_part)
+			# re_sub('[0-9]+gmail.com', 'gmail.com', domain_part)
 			# 11. For fastmail.com replace the email local part with the subdomain.
 			"""not implemented"""
 			# 12. Remove alias parts from the local part.
@@ -46,7 +45,7 @@ class CustomUserManager(BaseUserManager):
 		email = self.normalize_email(email)
 		user = self.model(
 			username=username,
-			email=self.normalize_email(email),
+			email=email,
 			is_active=is_active,
 			**extra_fields)
 		user.set_password(password)
