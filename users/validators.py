@@ -15,7 +15,7 @@ class CustomPasswordValidator:
 		if len(password) > max_length:
 			errors.append(f"Password should have no more than {max_length} characters.")
 		# small letter present validation
-		if not (char for char in password if char.islower()):
+		if not [char for char in password if char.islower()]:
 			errors.append("Password should have at least 1 lower case letter.")
 		# capital letter present validation
 		if not [char for char in password if char.isupper()]:
@@ -29,5 +29,5 @@ class CustomPasswordValidator:
 		if errors:
 			raise ValidationError(errors, code="password_too_weak")
 
-	def get_help_text(self):
-		return "Password should have at least one of each: small letter, capital letter, digit, special sign."
+	# def get_help_text(self):
+	# 	return "Password should have at least one of each: small letter, capital letter, digit, special sign."
