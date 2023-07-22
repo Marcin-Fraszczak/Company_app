@@ -7,3 +7,6 @@ class NoFirstName(BadRequest):
 
 class NoLastName(BadRequest):
 	default_detail = {"last_name": "Last name must be set"}
+
+class InvalidEmail(BadRequest):
+	default_detail = {"email": "Invalid email address"}
