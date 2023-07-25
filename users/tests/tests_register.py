@@ -61,13 +61,6 @@ class TestUserRegistration:
 		'capital letters': 'test@GmAil.com',
 		'white spaces': '  test@gmail.com     ',
 	}
-	# superuser_env_variables = {
-	# 	"DJANGO_SUPERUSER_PASSWORD": "Testpass123#",
-	# 	"DJANGO_SUPERUSER_USERNAME": "admin",
-	# 	"DJANGO_SUPERUSER_EMAIL": "a@a.pl",
-	# 	"DJANGO_SUPERUSER_FIRST_NAME": "name",
-	# 	"DJANGO_SUPERUSER_LAST_NAME": "surname"
-	# }
 	User = get_user_model()
 
 	def test_url_exists_at_correct_location(self, options_response):
@@ -152,8 +145,10 @@ class TestUserRegistration:
 		users_before = self.User.objects.all().count()
 		response = client.post(self.register_url, self.user_data)
 		assert response.status_code == 201
-		users_after = self.User.objects.all().count()
-		assert users_after - users_before == 1
+		users_after = self.User.objects.all()
+		assert users_after.count() - users_before == 1
+		user = users_after.last()
+		assert user.username == self.user_data.get('username')
 
 	@pytest.mark.django_db
 	def test_emails_are_normalized(self, client):
