@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 	'rest_registration',
 
 	'users.apps.UsersConfig',
+	'projects.apps.ProjectsConfig',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-	"ACCESS_TOKEN_LIFETIME": timedelta(seconds=30),
+	"ACCESS_TOKEN_LIFETIME": timedelta(seconds=300),
 }
 
 REST_REGISTRATION = {
