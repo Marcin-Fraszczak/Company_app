@@ -26,7 +26,6 @@ class TestSuperuserCommand:
 		assert users_after - users_before == 1
 		user = self.User.objects.get(username=admin_username)
 		assert user
-		assert user.username == admin_username
 
 	@pytest.mark.django_db
 	def test_superuser_not_created_without_admin_privileges(self):
